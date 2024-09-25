@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android_HCE_Emulate_A_CreditCard</string>
+    <string name="servicedesc">HCE Service CreditCard</string>
+    <string name="aiddescription">HCE AID Description</string>
+    <!-- visa credit or debit card -->
+    <string name="aidVisaCard">A0000000031010</string>
+</resources>
