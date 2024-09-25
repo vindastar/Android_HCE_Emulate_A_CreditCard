@@ -27,6 +27,17 @@ public class Utils {
         return data;
     }
 
+    public static byte[] concatenateByteArrays(byte[] dataA, byte[] dataB) {
+        byte[] concatenated = new byte[dataA.length + dataB.length];
+        for (int i = 0; i < dataA.length; i++) {
+            concatenated[i] = dataA[i];
+        }
+        for (int i = 0; i < dataB.length; i++) {
+            concatenated[dataA.length + i] = dataB[i];
+        }
+        return concatenated;
+    }
+
     public static void doVibrate(Activity activity) {
         if (activity != null) {
             // Make a Sound
