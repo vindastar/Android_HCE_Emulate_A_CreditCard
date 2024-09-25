@@ -44,7 +44,7 @@ every transaction may get processed with high "security" priority, but in genera
 to make a working code.
 
 ## Steps to create a HCE Credit Card emulator
-
+g
 
 
 
