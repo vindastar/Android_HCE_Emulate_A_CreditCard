@@ -43,6 +43,10 @@ a valid signature that can get responded to the terminal and has a valid signatu
 every transaction may get processed with high "security" priority, but in general it is really hard 
 to make a working code.
 
+## Link my NFC Credit Card Reader tutorial
+
+**Talk to your Credit Card**: https://medium.com/@androidcrypto/talk-to-your-credit-card-part-1-select-ppse-paypass-payment-system-environment-674bbc9745eb
+
 ## Steps to create a HCE Credit Card emulator
 g
 
