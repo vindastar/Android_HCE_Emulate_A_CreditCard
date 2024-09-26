@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     mMessageReceiver, new IntentFilter("HceCcEmulatorService"));
         }
 
-
     }
-
 
     @Override
     public void onResume() {

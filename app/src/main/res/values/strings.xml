@@ -11,6 +11,7 @@
     <string name="hcePpse">325041592E5359532E4444463031</string>
     <!-- visa credit or debit card -->
     <string name="aidVisaCard">A0000000031010</string>
+    <!-- mastercard credit or debit card -->
     <string name="aidMastercard">A0000000041010</string>
     <string name="hce_service_log">HCE Service Log</string>
 

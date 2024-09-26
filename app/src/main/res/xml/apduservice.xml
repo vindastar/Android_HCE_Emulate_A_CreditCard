@@ -7,7 +7,6 @@
         android:category="other">
         <!-- select PPSE 2PAY.SYS.DDF01 -->
         <aid-filter android:name="@string/hcePpse"/>
-        <!-- Sample for the demo application F2233445566 -->
         <aid-filter android:name="@string/aidVisaCard"/>
         <aid-filter android:name="@string/aidMastercard"/>
     </aid-group>
