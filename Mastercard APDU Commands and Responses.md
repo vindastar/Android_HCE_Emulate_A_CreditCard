@@ -1,18 +1,21 @@
-# APDU Commands and Responses for Mastercard AAB
+# APDU Commands and Responses for a Mastercard (here: AAB Bank)
 
 **Note on the Application Primary Account Number (PAN) in this document (= CreditCard number)** 
-The PAN shown in this document is from an outdated and deactivated Credit Card so the data 
-cannot used for real transactions.
+The PAN shown in this document is from an **outdated and deactivated Credit Card** so the data 
+cannot be used for real transactions.
 
-PAN 5375050000160110 is found at 3 places in the data:
-- read file SFI 08 0ile 01
-    9F 6B 13 -- Track 2 Data 53 75 05 00 00 16 01 10 D2 40 32 21 00 00 00 00
-- read file SFI 10 file 01
-    5A 08 -- Application Primary Account Number (PAN) 53 75 05 00 00 16 01 10 (NUMERIC)
-- read file SFI 10 file 01
-    57 13 -- Track 2 Equivalent Data 53 75 05 00 00 16 01 10 D2 40 32 21 27 94 32 90
-- 
+The PAN 5375050000160110 is found at 3 places in the data:
+- read file SFI 08 file 01 9F 6B 13 -- Track 2 Data **53 75 05 00 00 16 01 10** D2 40 32 21 00 00 00 00
+- read file SFI 10 file 01 5A 08 -- Application Primary Account Number (PAN) **53 75 05 00 00 16 01 10** (NUMERIC)
+- read file SFI 10 file 01 57 13 -- Track 2 Equivalent Data **53 75 05 00 00 16 01 10** D2 40 32 21 27 94 32 90
 
+The EXPIRE DATE 03/2024 is found at 3 places in the data (difficult to see !): 
+- read file SFI 08 file 01 9F 6B 13 -- Track 2 Data 53 75 05 00 00 16 01 10 D**2 40 3**2 21 00 00 00 00
+- read file SFI 10 file 01 57 13 -- Track 2 Equivalent Data 53 75 05 00 00 16 01 10 D**2 40 3**2 21 27 94 32 90
+
+So if you are going to change any data you have to do this at several places ! A good help is to search for the 
+hex encoded responses and replace the data accordingly. Please do not change the length of the PAN as the data 
+gets invalidated by this.
 
 ```plaintext
 NFC tag discovered
