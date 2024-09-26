@@ -47,6 +47,14 @@ to make a working code.
 
 **Talk to your Credit Card**: https://medium.com/@androidcrypto/talk-to-your-credit-card-part-1-select-ppse-paypass-payment-system-environment-674bbc9745eb
 
+The final app is available on GitHub for self compiling (recommended) or you can download the final 
+app (subfolder debug-release) of part 7 here: https://github.com/AndroidCrypto/TalkToYourCreditCardPart7
+
+It is recommended to use this app for your first steps as this is an EMV/Credit Card Reader application 
+that is acting like a real POS terminal. Of course - if you should have an own POS terminal feel free to 
+use the app. But please be aware: the final app won't allow to make payments as a lot of steps are missing. 
+It is unpredictable how a business terminal act's on my emulated Credit Card.
+
 ## These are the steps to create a HCE Credit Card emulator
 
 ### 1 Setup an activity with just a MainActivity class
