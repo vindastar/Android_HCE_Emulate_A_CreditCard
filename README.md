@@ -52,14 +52,14 @@ app (subfolder debug-release) of part 7 here: [https://github.com/AndroidCrypto/
 
 It is recommended to use this app for your first steps as this is an EMV/Credit Card Reader application 
 that is acting like a real POS terminal. Of course - if you should have an own POS terminal feel free to 
-use the app. But please be aware: the final app won't allow to make payments as a lot of steps are missing. 
+use it instead of the app. But please be aware: the final app won't allow to make payments as a lot of steps are missing. 
 It is unpredictable how a business terminal act's on my emulated Credit Card.
 
 ## These are the three steps to create a HCE Credit Card emulator
 
-### 1 Setup an activity with just a MainActivity class
+### 1 Setup an application with just a MainActivity class (Activity)
 
-As the HCE Emulation is done in a background service we do not need much UI stuff. Create a service class
+As the HCE Emulation is done in a background service we do not need much UI stuff. Additionally create a service class
 (e.g. "HceCcEmulationService.java") that **extends HostApduService**. See the HCE Beginner tutorial 
 how on to do so: https://medium.com/@androidcrypto/how-to-use-host-based-card-emulation-hce-in-android-a-beginner-tutorial-java-32974dd89529
 
@@ -83,11 +83,11 @@ As we need a binding of the service class to our app we need to append the HCE r
 </service>                                                                                       
 ```
 
-The are two file names defined: the *android:name=".HceCcEmulationService"* is pointing to the service 
+There are two file names defined: the *android:name=".HceCcEmulationService"* is pointing to the service 
 class you created in 1) and the resource for meta-data: *android:resource="@xml/apduservice" /> * - 
 this is the file "apduservice.xml", located in the "res" part of your project in the subfolder "xml".
 
-This is one of the most important settings you are going to do. The content may look like mine:
+This is one of the most important settings you are going to do. The content of "apduservice.xml" may look like mine:
 
 ```plaintext
 <?xml version="1.0" encoding="utf-8"?>
@@ -157,7 +157,7 @@ processCommandApdu: 00a404000e325041592e5359532e444446303100
 processCommandApdu: ??�??2PAY.SYS.DDF01??
 ```
 
-Beneath some unprintable bytes there is cleartext message withing the incoming commandApdu: 
+Beneath some unprintable bytes there is a cleartext message withing the incoming commandApdu: 
 **2PAY.SYS.DDF01**. Using a search machine brings you to an article within the previous mentioned article series 
 "Talk to your Credit Card" that explains what an NFC based Credit Card reader is doing to retrieve the data. 
 In [Part 1](https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a) 
