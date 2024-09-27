@@ -28,7 +28,7 @@
         </activity>
 
         <service
-            android:name=".HceCcEmulationService"
+            android:name=".HceCcEmulationService2"
             android:exported="true"
             android:permission="android.permission.BIND_NFC_SERVICE">
             <intent-filter>

@@ -7,6 +7,14 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Date;
+
 public class Utils {
 
     public static String bytesToHexNpe(byte[] bytes) {
@@ -38,6 +46,13 @@ public class Utils {
         return concatenated;
     }
 
+    public static boolean arrayBeginsWith (byte[] fullArray, byte[] searchArray) {
+        if ((fullArray == null) || (searchArray == null)) return false;
+        if (searchArray.length == 0) return false;
+        if (Arrays.equals(Arrays.copyOf(fullArray, searchArray.length), searchArray)) return true;
+        return false;
+    }
+
     public static void doVibrate(Activity activity) {
         if (activity != null) {
             // Make a Sound
@@ -48,6 +63,26 @@ public class Utils {
                 v.vibrate(50);
             }
         }
+    }
+
+    /**
+     * section for timestamps
+     */
+
+    private static String getTimestampMillis() {
+        // O = SDK 26
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return ZonedDateTime
+                    .now(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("uuuu.MM.dd HH:mm:ss.SSS"));
+        } else {
+            return new SimpleDateFormat("yyyy.MM.dd HH:mm:ss:SSS").format(new Date());
+        }
+    }
+
+    // returns a String for a filename
+    public static String getTimestampMillisFile() {
+        return getTimestampMillis().replaceAll(":", "_").replaceAll(":", "_").replaceAll(" ", "_").replaceAll("\\.", "_");
     }
 
 }

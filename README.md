@@ -43,9 +43,9 @@ a valid signature that can get responded to the terminal and has a valid signatu
 every transaction may get processed with high "security" priority, but in general it is really hard 
 to make a working code.
 
-## Link my NFC Credit Card Reader tutorial
+## Link to my NFC Credit Card Reader tutorial
 
-**Talk to your Credit Card**: https://medium.com/@androidcrypto/talk-to-your-credit-card-part-1-select-ppse-paypass-payment-system-environment-674bbc9745eb
+**Talk to your Credit Card**: https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a
 
 The final app is available on GitHub for self compiling (recommended) or you can download the final 
 app (subfolder debug-release) of part 7 here: https://github.com/AndroidCrypto/TalkToYourCreditCardPart7
@@ -55,7 +55,7 @@ that is acting like a real POS terminal. Of course - if you should have an own P
 use the app. But please be aware: the final app won't allow to make payments as a lot of steps are missing. 
 It is unpredictable how a business terminal act's on my emulated Credit Card.
 
-## These are the steps to create a HCE Credit Card emulator
+## These are the three steps to create a HCE Credit Card emulator
 
 ### 1 Setup an activity with just a MainActivity class
 
@@ -134,9 +134,9 @@ from Android's OS to the app (or better to the service).
 
 ### 3 Modify your blank service class
 
-Simply add three lines of code to your class. The "SELECT_OK_SW" defines a response that is "SUCCESS". 
+Simply add four lines of code to your class. The "SELECT_OK_SW" defines a response that is "SUCCESS". 
 The print on System's console prints out a byte array in hex encoding. After the print the method 
-rezrns a "SUCCESS" to the reader.
+returns a "SUCCESS" to the reader.
 
 ```plaintext
 ...
@@ -145,15 +145,105 @@ public static byte[] SELECT_OK_SW = hexStringToByteArray("9000");
 @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle bundle) {
         System.out.println("processCommandApdu: " + bytesToHexNpe(commandApdu));
+        System.out.println("processCommandApdu: " + new String(commandApdu, StandardCharsets.UTF_8));
         return SELECT_OK_SW;
     }
 ```
+
+When tapping the device to the "Tak to your Credit Card" app there is just one line in the console:
+
+```none
+processCommandApdu: 00a404000e325041592e5359532e444446303100
+processCommandApdu: ??�??2PAY.SYS.DDF01??
+```
+
+Beneath some unprintable bytes there is cleartext message withing the incoming commandApdu: 
+**2PAY.SYS.DDF01**. Using a search machine brings you to an article within the previous mentioned article series 
+"Talk to your Credit Card" that explains what an NFC based Credit Card reader is doing to retrieve the data. 
+In [Part 1](https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a) 
+you find the string "2PAY.SYS.DDF01" as well, it is the same as we defined in the "apduservice.xml" 
+file. 
+
+**Congratulations** - you took the most important hurdle on your way to implement an Credit Card Emulator !
+
+## Next steps to emulate a Credit Card with HCE
+
+For the next steps it is very helpful if you can use **your own Credit Card** with the "Talk to your 
+Credit Card app". The log file of the app after reading a Credit Card is the best teacher to understand 
+the next steps.
+
+## A Note on processing sensitive data (e.g. Credit Card numbers, Expire dates)
+
+Please never ask a friend to hand out his or her Credit Card for test purposes. The "Talk to your 
+Credit Card app" exposes very sensitive data in a very easy way. Once the data is read out it is in the 
+world.
+
+Second: never ever publish those data in forums or web sites, even if they look harmless. When using 
+the app ou read the data from the card, and for example you get this analyzed data:
+
+```none
+parsed recovered ICC Public Key
+Recovered Data Header:                    106
+Recovered Data Header Byte:               6a
+Certificate Format:                       4
+--------------------------------
+Application Pan:                          4930005025003985ffff
+Certificate Expiration Date:              0926
+--------------------------------
+Certificate Serial Number:                54f6de
+Hash Algorithm Indicator                  1
+ICC Public Key Algorithm Indicator:       1
+ICC Public Key Length:                    128
+ICC Public Key Exponent Length:           1
+Leftmost Digits of the ICC Public Key:    cc1804e562a5d6b1f10bd992faec97a803fdbcb2ac8f8936fb18098688755d67ea37e5082f5c1a61075a43a720259f604ba7ed5eba751c53984b32526a5a319c9f07a6e8227785cb186201a0e9a3071e450b99feaa8e2182d68c112d422736dfeb0a3366370eba09ce8b32a51621d789cda3ae2e7e0ce66c28c74eff64c24eb5
+Optional padding:                         bbbbbbbbbbbb
+Hash Result :                             4dbe2c4f35c3a549af80f991318ad6ee76327d2a
+Data Trailer:                             188
+Data Trailer Byte:                        bc
+```
+
+If you are familiar with cryptography you know that a key certificate is a chain of certificates 
+that proof the correctness of some data. But, the **ICC Pub Key Certificate** contains additionally
+these data after decryption:
+
+```none
+parsed recovered ICC Public Key
+Recovered Data Header:                    106
+Recovered Data Header Byte:               6a
+Certificate Format:                       4
+--------------------------------
+Application Pan:                          4930005025003985ffff
+Certificate Expiration Date:              0926
+--------------------------------
+Certificate Serial Number:                54f6de
+Hash Algorithm Indicator                  1
+ICC Public Key Algorithm Indicator:       1
+ICC Public Key Length:                    128
+ICC Public Key Exponent Length:           1
+Leftmost Digits of the ICC Public Key:    cc1804e562a5d6b1f10bd992faec97a803fdbcb2ac8f8936fb18098688755d67ea37e5082f5c1a61075a43a720259f604ba7ed5eba751c53984b32526a5a319c9f07a6e8227785cb186201a0e9a3071e450b99feaa8e2182d68c112d422736dfeb0a3366370eba09ce8b32a51621d789cda3ae2e7e0ce66c28c74eff64c24eb5
+Optional padding:                         bbbbbbbbbbbb
+Hash Result :                             4dbe2c4f35c3a549af80f991318ad6ee76327d2a
+Data Trailer:                             188
+Data Trailer Byte:                        bc
+```
+
+**Oops, the certificate is containing e.g. the PAN that is the Credit Card number.** To all card 
+"hijackers" - the data is from an **outdated Credit Card** that is no longer in use, so this number is 
+**worthless**.
+
+The decryption of the data is available with an Android app that is available on GitHub since many 
+years. 
+
+**To repeat it again: never ever publish data related to payment card in the public !**
+
+
+
 
 
 # Stuff to delete
 
 Get the PAN and Expiration Date using the Public Key data on the tag. See NfcEmvExampleG8 in CryptoStuffActivity
 
-
+Create a valid Credit Card Number with bank select https://www.bincodes.com/bank-creditcard-generator/
 
 

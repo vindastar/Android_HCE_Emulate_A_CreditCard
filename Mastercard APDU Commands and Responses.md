@@ -9,9 +9,10 @@ The PAN 5375050000160110 is found at 3 places in the data:
 - read file SFI 10 file 01 5A 08 -- Application Primary Account Number (PAN) **53 75 05 00 00 16 01 10** (NUMERIC)
 - read file SFI 10 file 01 57 13 -- Track 2 Equivalent Data **53 75 05 00 00 16 01 10** D2 40 32 21 27 94 32 90
 
-The EXPIRE DATE 03/2024 is found at 3 places in the data (difficult to see !): 
+The EXPIRE DATE 03/2024 is found at 3 places in the data (difficult to see, best use hex string without blanks !): 
 - read file SFI 08 file 01 9F 6B 13 -- Track 2 Data 53 75 05 00 00 16 01 10 D**2 40 3**2 21 00 00 00 00
 - read file SFI 10 file 01 57 13 -- Track 2 Equivalent Data 53 75 05 00 00 16 01 10 D**2 40 3**2 21 27 94 32 90
+- read file SFI 10 file 01 5F 24 03 -- Application Expiration Date 24 03 31 (NUMERIC)
 
 So if you are going to change any data you have to do this at several places ! A good help is to search for the 
 hex encoded responses and replace the data accordingly. Please do not change the length of the PAN as the data 
