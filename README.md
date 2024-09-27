@@ -48,7 +48,7 @@ to make a working code.
 **Talk to your Credit Card**: https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a
 
 The final app is available on GitHub for self compiling (recommended) or you can download the final 
-app (subfolder debug-release) of part 7 here: https://github.com/AndroidCrypto/TalkToYourCreditCardPart7
+app (subfolder debug-release) of part 7 here: [https://github.com/AndroidCrypto/TalkToYourCreditCardPartG8](https://github.com/AndroidCrypto/TalkToYourCreditCardG8)
 
 It is recommended to use this app for your first steps as this is an EMV/Credit Card Reader application 
 that is acting like a real POS terminal. Of course - if you should have an own POS terminal feel free to 
@@ -235,6 +235,60 @@ The decryption of the data is available with an Android app that is available on
 years. 
 
 **To repeat it again: never ever publish data related to payment card in the public !**
+
+## Troubleshooting
+
+Developing a HCE application brings a lot of frustration as in most times the claim is: "It does not 
+work". Well, if your Credit Card reader doesn't find your HCE emulated tag or your HCE app (better: 
+the service) isn't called there IS indeed a problem on your side. I'm trying to identify the problem.
+
+### Is your Android device Host Based Card Emulation (HCE) "ready" ?
+
+This sounds crazy on first thought, but even if you can work with your NFC reader to read an NFC tag 
+there is not guaranty that HCE is supported. Solution in case of "not supported": get another Android 
+device.
+
+### Is the NFC service on yur phone enabled ?
+
+Don't rely on the fact that YOU did not put the service ever "off". Go to the "Connection" settings 
+of your device to be clear that NFC is set to "on".
+
+### Is your HCE service running and enabled on your Android device ?
+
+When developing HCE apps you often installed not just one app. When more than one app is concurring 
+with other apps to listen and answer to a "Select Payment Card" command (the first one in the 
+communication chain) there may be hick-ups. To verify your service is up and no other apps can disturb 
+the communication go to "Connect" settings, select "NFC" and click on a "button" that has something 
+to do with "payments" (even on my different Samsung devices they are named different). Usually you 
+are on a page informing you about apps for "contactless payments". Scroll down and there is a tab menu 
+for "Payments" and "Other" - click on "Other". You may get a large list of applications that all run 
+a HCE service on your device. Each of them can get enabled or disabled. Please deactivate for now 
+all other apps and just leave the "HCE Credit Card" app enabled - that is our sample app. Btw: if the 
+"HCE Credit Card" app isn't showing up here the  service is not running (either not started yet or 
+was stopped).
+
+### Is your HCE app listening to incoming commands ?
+
+Your app will only listening to incoming command when the service is registered for some addresses 
+called "Application Identifier" (AID). This registration is done by changing 3 files:
+- **AndroidManifest.xml**: setups the service for HCE with 2 main parameter: 
+- a) which class is the processing class (in my case "HceCcEmulationService.java") for incoming commands ?
+- b) which file contains the addresses for AIDs and other data (in my case "apduservice.xml")
+- **HceCcEmulationService.java**: does this class extend the "HostApduService" ?
+- **apduservice.xml**: does this file use the category "Other" ? Does this file contain at least the AID "325041592E5359532E4444463031" ?
+- eventually (yes in my case) **strings.xml**: in my app I extracted all static strings in apduservice.xml to the resource file "strings.xml" (e.g. "@string/hcePpse"). Does the string.xml file contains at least "325041592E5359532E4444463031" ?
+
+You may that "*puh, of course*", but in my own experience I sometimes worked with several files to test, 
+and in the end one file or setting pointed to wrong data, so please double check these settings 
+**at all**.
+
+### Did you use my "Talk to your Credit Card" application as POS Terminal ?
+
+You may answer - "*I do have a good Credit Card reader*" but sometimes these readers are for specific 
+Credit Cards only. For your first tests (to be for sure that the app IS working) use the app. It is 
+part of a tutorial series about [Reading of Credit Cards](https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a) and you get the final app (last updated in 
+September 2024) here: https://github.com/AndroidCrypto/TalkToYourCreditCardG8
+
 
 
 
