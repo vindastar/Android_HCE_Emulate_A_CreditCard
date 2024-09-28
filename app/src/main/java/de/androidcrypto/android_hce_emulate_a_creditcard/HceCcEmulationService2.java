@@ -64,7 +64,7 @@ public class HceCcEmulationService2 extends HostApduService {
         if (Arrays.equals(commandApdu, SELECT_PPSE_COMMAND)) {
             // step 01 selecting the PPSE
             sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
-            sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(SELECT_PPSE_RESPONSE));
+            // sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(SELECT_PPSE_RESPONSE));
             selectCard = readCardEmulationFromInternalStorage();
             System.out.println("HCE2 selectCard: " + selectCard);
             readCarEmulation = false;
@@ -72,15 +72,23 @@ public class HceCcEmulationService2 extends HostApduService {
             if (selectCard == -1) {
                 return SELECT_OK_SW;
             } else if (selectCard == 0) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             } else if (selectCard == 1) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             } else if (selectCard == 2) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardLloyds.SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(MastercardSampleCardLloyds.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             } else if (selectCard == 3) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(VisaAnonymizedSampleCard.SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(VisaAnonymizedSampleCard.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             } else if (selectCard == 4) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardAnonymizedSampleCard.SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(MastercardAnonymizedSampleCard.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+            } else if (selectCard == 5) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(GirocardVobaRf.SELECT_PPSE_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             }
         }
 
@@ -407,7 +415,121 @@ public class HceCcEmulationService2 extends HostApduService {
                 sendMessageToActivity("step 08 Read File 20/02 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE));
                 return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE, SELECT_OK_SW);
             }
+        } else if (selectCard == 5) {
+            // Girocard VoBa Raesfeld RF
+            sendMessageToActivity("# VoBa Raesf RF Emulated #", "");
+            /*
+            // step 01
+            if (Arrays.equals(commandApdu, MastercardSampleCardAab.SELECT_PPSE_COMMAND)) {
+                // step 01 selecting the PPSE
+                sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+            }
+             */
 
+            // step 02
+            if (Arrays.equals(commandApdu, GirocardVobaRf.SELECT_AID_COMMAND)) {
+                // step 02 selecting the AID
+                sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 02 Select AID Response", bytesToHexNpe(GirocardVobaRf.SELECT_AID_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.SELECT_AID_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 03
+            // todo do not compare the full commandApdu as it is changed to my sample data
+            // if (Arrays.equals(commandApdu, GirocardVobaRf.SGET_PROCESSING_OPTONS_COMMAND)) {
+            if (arrayBeginsWith(commandApdu, GirocardVobaRf.GET_PROCESSING_OPTONS_COMMAND_START)) {
+                // step 03 Get Processing Options
+                sendMessageToActivity("step 03 Get Processing Options (GPO) Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 03 Get Processing Options (GPO) Response", bytesToHexNpe(GirocardVobaRf.GET_PROCESSING_OPTONS_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.GET_PROCESSING_OPTONS_RESPONSE, SELECT_OK_SW);
+            }
+
+            // in total 2 files in SFI 18 (01, 02), 1 file in SFI 20 (01), 1 file in SFI 40 (04), 3 files in SFI 08 (05, 07, 03) (7 files total)
+            // step 04
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_18_01_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 18/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 18/01 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_18_01_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_18_01_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 05
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_18_02_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 05 Read File 18/02 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 05 Read File 18/02 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_18_02_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_18_02_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 06
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_20_01_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 06 Read File 20/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 06 Read File 20/01 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_20_01_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_20_01_COMMAND, SELECT_OK_SW);
+            }
+
+            // step 07
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_40_04_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 07 Read File 40/04 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 07 Read File 40/04 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_40_04_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_40_04_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 08
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_08_05_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 08/05 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 08/05 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_08_05_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_08_05_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 09
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_08_07_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 08/07 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 08/07 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_08_07_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_08_07_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 10
+            if (Arrays.equals(commandApdu, GirocardVobaRf.READ_FILE_08_03_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 10 Read File 08/03 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 10 Read File 08/03 Response", bytesToHexNpe(GirocardVobaRf.READ_FILE_08_03_RESPONSE));
+                return concatenateByteArrays(GirocardVobaRf.READ_FILE_08_03_RESPONSE, SELECT_OK_SW);
+            }
+
+
+            /*
+            // step 05
+            if (Arrays.equals(commandApdu, MastercardAnonymizedSampleCard.READ_FILE_10_01_COMMAND)) {
+                // step 05 Read File 10/01 Command
+                sendMessageToActivity("step 05 Read File 10/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 05 Read File 10/01 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_10_01_RESPONSE));
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_10_01_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 06
+            if (Arrays.equals(commandApdu, MastercardAnonymizedSampleCard.READ_FILE_20_01_COMMAND)) {
+                // step 06 Read File 20/01 Command
+                sendMessageToActivity("step 06 Read File 20/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 06 Read File 20/01 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_20_01_RESPONSE));
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_01_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 07
+            if (Arrays.equals(commandApdu, MastercardAnonymizedSampleCard.READ_FILE_20_02_COMMAND)) {
+                // step 07 Read File 20/02 Command
+                sendMessageToActivity("step 08 Read File 20/02 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 08 Read File 20/02 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE));
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE, SELECT_OK_SW);
+            }
+
+             */
         }
 
         return SELECT_OK_SW;

@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 } else if (cardEmulation.equals("4")) {
                     success = writeTextToInternalStorage(view.getContext(), CARD_EMULATION_FILENAME, null, cardEmulation);
                     showAToast(view.getContext(), "Success CardEmulation is " + cardEmulation);
+                } else if (cardEmulation.equals("5")) {
+                    success = writeTextToInternalStorage(view.getContext(), CARD_EMULATION_FILENAME, null, cardEmulation);
+                    showAToast(view.getContext(), "Success CardEmulation is " + cardEmulation);
                 } else {
                     showAToast(view.getContext(), "FAILURE - Card not allowed");
                 }
