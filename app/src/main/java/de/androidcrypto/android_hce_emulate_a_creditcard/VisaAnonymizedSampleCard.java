@@ -10,7 +10,6 @@ public class VisaAnonymizedSampleCard {
      * The Expire Date is fixed to 10 2029
      */
 
-
 /*
 
 Details for 4779447134861024
