@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvHceServiceLog;
     private com.google.android.material.textfield.TextInputEditText etCardEmulation;
-    private Button btnCardEmulation, btnSaveLogfile;
+    private Button btnCardEmulation, btnSaveLogfile, btnClearLog;
     private static final String CARD_EMULATION_FILENAME = "cardemulation.txt"; // any changes need to done in MainActivity and HceCcEmulationService
     private String hceServiceLog = "";
 
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
         etCardEmulation = findViewById(R.id.etCardEmulation);
         btnCardEmulation = findViewById(R.id.btnCardEmulation);
+        btnClearLog = findViewById(R.id.btnClearLog);
         btnSaveLogfile = findViewById(R.id.btnSaveLog);
         tvHceServiceLog = findViewById(R.id.tvHceServiceLog);
 
@@ -104,6 +105,16 @@ public class MainActivity extends AppCompatActivity {
                 hceServiceLog = "";
                 tvHceServiceLog.setText("");
                 showAToast(view.getContext(), "Logfile saved to\n" + fileName);
+            }
+        });
+
+        btnClearLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // delete the log file
+                hceServiceLog = "";
+                tvHceServiceLog.setText("");
+                showAToast(view.getContext(), "Logfile cleared");
             }
         });
     }

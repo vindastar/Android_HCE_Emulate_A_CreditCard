@@ -4,7 +4,7 @@
     android:apduServiceBanner="@drawable/hce_260_96"
     android:requireDeviceUnlock="false">
     <aid-group android:description="@string/aiddescription"
-        android:category="other">
+        android:category="payment">
         <!-- select PPSE 2PAY.SYS.DDF01 -->
         <aid-filter android:name="@string/hcePpse"/>
         <aid-filter android:name="@string/aidVisaCard"/>

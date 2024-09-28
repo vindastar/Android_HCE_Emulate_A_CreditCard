@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
             android:hint="-1 OK 0Vis 1AAB 2Ll 3AnoVis 4AnoMC"
             android:visibility="visible"
@@ -83,15 +83,32 @@
             android:layout_marginBottom="4dp"
             android:text="select a card to emulate" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <Button
         android:id="@+id/btnSaveLog"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="4dp"
-        android:text="save the log file to internal storage" />
+        android:text="save the log file" />
+
+        <Button
+            android:id="@+id/btnClearLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="clear the log file" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvHceServiceLog"
