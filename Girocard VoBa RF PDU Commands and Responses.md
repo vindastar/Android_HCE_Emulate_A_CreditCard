@@ -8,9 +8,24 @@ application Id (AID): a0000003591010028001 Euro Alliance of Payment Schemes s.c.
 application Id (AID): d27600002547410100   ZKA - Girocard ATM
 application Id (AID): a0000000043060       Mastercard International - Maestro (Debit) Card
 ```
-
+```none
 For usage at POS terminal I'm using the AID "A00000005945430100"
                                              A0000000031010
+6F File Control Information (FCI) Template
+ 	84 Dedicated File (DF) Name
+ 	 	325041592E5359532E4444463031
+ 	A5 File Control Information (FCI) Proprietary Template
+ 	 	BF0C File Control Information (FCI) Issuer Discretionary Data
+ 	 	 	61 Application Template
+ 	 	 	 	4F Application Identifier (AID) – card
+ 	 	 	 	 	A0000000031010
+ 	 	 	 	9F0A Unknown tag
+ 	 	 	 	 	0001050100000000
+ 	 	 	 	 	
+6f2b840e325041592e5359532e4444463031a519bf0c1661144f07a00000000310109f0a080001050100000000
+6f2d840e325041592e5359532e4444463031a51bbf0c1861164f09A000000059454301009f0a080001050100000000	 // correct 	  	 	 	
+ 	 	 	 	 	                                             
+```
 ```none
 NFC tag discovered
 TagId: 0801f4b4
