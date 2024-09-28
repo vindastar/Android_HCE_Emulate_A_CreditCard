@@ -10,7 +10,7 @@ application Id (AID): a0000000043060       Mastercard International - Maestro (D
 ```
 
 For usage at POS terminal I'm using the AID "A00000005945430100"
-
+                                             A0000000031010
 ```none
 NFC tag discovered
 TagId: 0801f4b4

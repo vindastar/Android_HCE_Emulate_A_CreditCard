@@ -9,5 +9,6 @@
         <aid-filter android:name="@string/hcePpse"/>
         <aid-filter android:name="@string/aidVisaCard"/>
         <aid-filter android:name="@string/aidMastercard"/>
+        <aid-filter android:name="@string/aidGirocard"/>
     </aid-group>
 </host-apdu-service>

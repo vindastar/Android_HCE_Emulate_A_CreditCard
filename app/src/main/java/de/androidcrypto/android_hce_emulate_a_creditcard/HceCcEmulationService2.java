@@ -554,6 +554,8 @@ public class HceCcEmulationService2 extends HostApduService {
             return 3;
         } else if (cardEmulation.equals("4")) {
             return 4;
+        } else if (cardEmulation.equals("5")) {
+            return 5;
         } else {
             return -1;
         }
