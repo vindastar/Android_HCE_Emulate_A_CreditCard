@@ -1,5 +1,24 @@
 # APDU Commands and Responses for a Girocard (here: VoBa Raesfeld Erle RF)
 
+```none
+PAN: 6726428902046846007
+Expiration date (YYMMDD): 241231
+
+Real IBAN: DE69 4006 9606 0204 6846 00
+
+Change PAN from 67264289 0204684600 7
+             to          0204686200 
+
+old: 672642890204684600
+new: 672642890204686200 
+Search for 0204684600
+found in:
+SFI 8 file 5 
+SFI 8 file 3
+
+
+```
+
 This tag contains 4 AIDs for different purposes:
 ```none
 Found tag 0x4F 4 times:

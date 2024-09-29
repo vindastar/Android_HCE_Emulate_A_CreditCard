@@ -53,7 +53,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
-            android:hint="-1 OK 0Vis 1AAB 2Ll 3AnoVis 4AnoMC 5VoBa"
+            android:hint="-1 OK 0Vis 1AAB 2Ll 3AnoVis 4AnoMC 5VoBa 6 AnoVoBa"
             android:visibility="visible"
             app:boxCornerRadiusBottomEnd="5dp"
             app:boxCornerRadiusBottomStart="5dp"

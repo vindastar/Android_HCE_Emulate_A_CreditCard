@@ -89,6 +89,9 @@ public class HceCcEmulationService2 extends HostApduService {
             } else if (selectCard == 5) {
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(GirocardVobaRf.SELECT_PPSE_RESPONSE));
                 return concatenateByteArrays(GirocardVobaRf.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+            } else if (selectCard == 6) {
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(GirocardVobaAnonymized.SELECT_PPSE_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
             }
         }
 
@@ -530,6 +533,93 @@ public class HceCcEmulationService2 extends HostApduService {
             }
 
              */
+        } else if (selectCard == 6) {
+            // Girocard VoBa Raesfeld Anonymized
+            sendMessageToActivity("# VoBa Raesf Anonymized Emulated #", "");
+            /*
+            // step 01
+            if (Arrays.equals(commandApdu, MastercardSampleCardAab.SELECT_PPSE_COMMAND)) {
+                // step 01 selecting the PPSE
+                sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+            }
+             */
+
+            // step 02
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.SELECT_AID_COMMAND)) {
+                // step 02 selecting the AID
+                sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 02 Select AID Response", bytesToHexNpe(GirocardVobaAnonymized.SELECT_AID_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.SELECT_AID_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 03
+            // todo do not compare the full commandApdu as it is changed to my sample data
+            // if (Arrays.equals(commandApdu, GirocardVobaAnonymized.SGET_PROCESSING_OPTONS_COMMAND)) {
+            if (arrayBeginsWith(commandApdu, GirocardVobaAnonymized.GET_PROCESSING_OPTONS_COMMAND_START)) {
+                // step 03 Get Processing Options
+                sendMessageToActivity("step 03 Get Processing Options (GPO) Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 03 Get Processing Options (GPO) Response", bytesToHexNpe(GirocardVobaAnonymized.GET_PROCESSING_OPTONS_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.GET_PROCESSING_OPTONS_RESPONSE, SELECT_OK_SW);
+            }
+
+            // in total 2 files in SFI 18 (01, 02), 1 file in SFI 20 (01), 1 file in SFI 40 (04), 3 files in SFI 08 (05, 07, 03) (7 files total)
+            // step 04
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_18_01_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 18/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 18/01 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_18_01_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_18_01_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 05
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_18_02_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 05 Read File 18/02 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 05 Read File 18/02 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_18_02_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_18_02_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 06
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_20_01_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 06 Read File 20/01 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 06 Read File 20/01 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_20_01_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_20_01_COMMAND, SELECT_OK_SW);
+            }
+
+            // step 07
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_40_04_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 07 Read File 40/04 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 07 Read File 40/04 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_40_04_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_40_04_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 08
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_08_05_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 08/05 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 08/05 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_08_05_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_08_05_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 09
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_08_07_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 04 Read File 08/07 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 04 Read File 08/07 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_08_07_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_08_07_RESPONSE, SELECT_OK_SW);
+            }
+
+            // step 10
+            if (Arrays.equals(commandApdu, GirocardVobaAnonymized.READ_FILE_08_03_COMMAND)) {
+                // step 04 Read File 08/01 Command
+                sendMessageToActivity("step 10 Read File 08/03 Command", bytesToHexNpe(commandApdu));
+                sendMessageToActivity("step 10 Read File 08/03 Response", bytesToHexNpe(GirocardVobaAnonymized.READ_FILE_08_03_RESPONSE));
+                return concatenateByteArrays(GirocardVobaAnonymized.READ_FILE_08_03_RESPONSE, SELECT_OK_SW);
+            }
         }
 
         return SELECT_OK_SW;
@@ -556,6 +646,8 @@ public class HceCcEmulationService2 extends HostApduService {
             return 4;
         } else if (cardEmulation.equals("5")) {
             return 5;
+        } else if (cardEmulation.equals("6")) {
+            return 6;
         } else {
             return -1;
         }
