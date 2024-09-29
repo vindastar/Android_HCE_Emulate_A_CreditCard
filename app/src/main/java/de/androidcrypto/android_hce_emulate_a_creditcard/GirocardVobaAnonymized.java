@@ -55,25 +55,5 @@ public class GirocardVobaAnonymized {
     public static byte[] READ_FILE_08_07_COMMAND = hexStringToByteArray("00b2070c00");
     public static byte[] READ_FILE_08_07_RESPONSE = hexStringToByteArray("70178e0c00000000000000001f0302039f080200029f4a0182");
 
-
-    /*
-    public static byte[] READ_FILE_10_03_COMMAND = hexStringToByteArray("00b2031400");
-    public static byte[] READ_FILE_10_03_RESPONSE = hexStringToByteArray("7081fb9081f830f056de40a950bec2a870c59d5462222605a8f31cdef39a0537c7c175115e352ad0c55470fce5737c4e769897623e01401da73e01644bb0b491aa1aadb27fc360c0089f7c2e52a64e96a3f8a59f76e49aa6dd9a6792644f2b0b513b1a1a93b98a3cc19f0bec45e9f8edd70f893a8cafb21b62f3b8f15983775f14fd16cb36a19120e5a5068ef9f05ffaea4e714d80f134a298d167a65a92f6f57963db94ab5d3967f6675b3609a0fceb5fbb70f07cfdeab1352c6a34d6be737aa74848f3f56932f08b51f54aa3040f1ace4a0ced38684df900a395c5cd88562eb2af8d35601210c20d6c3425dcd813b9b358d1356d52a8ebd8fb5a19915d");
-
-    public static byte[] READ_FILE_10_04_COMMAND = hexStringToByteArray("00b2041400");
-    public static byte[] READ_FILE_10_04_RESPONSE = hexStringToByteArray("70078f01099f320103");
-
-    public static byte[] READ_FILE_10_05_COMMAND = hexStringToByteArray("00b2051400");
-    public static byte[] READ_FILE_10_05_RESPONSE = hexStringToByteArray("7081b49f4681b047461ffca14b5dfdc209569c8a14f17644251aa3f4abea251262134b920982f0250741f96fccb40800293054c0d89824ba7ac44ee7bab06fa157fccf7e52d3c64b4d8acd41b9774b801519ed6fec827ec2ec29f8991167c453776559a4a06fd98c4b9bd1548a65af2f56002a836bdf9a040a9253e653584c92833c3d1aa8e08c4de9cda1026044f80f39a9326a57496598987a6b3e18a5f56a8bdede752870e8793776db9d325ccd9c7ca5db33c28f04");
-
-    public static byte[] READ_FILE_10_06_COMMAND = hexStringToByteArray("00b2061400");
-    public static byte[] READ_FILE_10_06_RESPONSE = hexStringToByteArray("702e9f4701035a0849218280948967525f3401005f24032502285f280208269f6e04207000009f690701b4cba8d61600");
-
-    public static byte[] SELECT_COMMAND3 = hexStringToByteArray("00");
-    public static byte[] SELECT_RESPONSE3 = hexStringToByteArray("00");
-
-    public static byte[] SELECT_COMMAND4 = hexStringToByteArray("00");
-    public static byte[] SELECT_RESPONSE4 = hexStringToByteArray("00");
-*/
 }
 
