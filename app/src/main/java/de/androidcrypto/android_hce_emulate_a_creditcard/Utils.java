@@ -17,6 +17,17 @@ import java.util.Date;
 
 public class Utils {
 
+    /**
+     * converts a byte to its hex string representation
+     *
+     * @param data
+     * @return
+     */
+    public static String byteToHex(byte data) {
+        int hex = data & 0xFF;
+        return Integer.toHexString(hex);
+    }
+
     public static String bytesToHexNpe(byte[] bytes) {
         if (bytes == null) return "";
         StringBuffer result = new StringBuffer();
