@@ -12,6 +12,7 @@ public class Aid_Model {
     private byte[] Aid;
     private String panFoundString;
     private String expFoundString;
+    private List<Integer> commandTypeInt;
     private List<String> commandType;
     private List<byte[]> command;
     private List<byte[]> respond;
@@ -43,6 +44,14 @@ public class Aid_Model {
 
     public void setExpFoundString(String expFoundString) {
         this.expFoundString = expFoundString;
+    }
+
+    public List<Integer> getCommandTypeInt() {
+        return commandTypeInt;
+    }
+
+    public void setCommandTypeInt(List<Integer> commandTypeInt) {
+        this.commandTypeInt = commandTypeInt;
     }
 
     public List<String> getCommandType() {

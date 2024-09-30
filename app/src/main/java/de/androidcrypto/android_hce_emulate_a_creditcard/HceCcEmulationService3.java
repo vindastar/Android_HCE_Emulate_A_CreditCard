@@ -43,6 +43,7 @@ public class HceCcEmulationService3 extends HostApduService {
     private int selectCard = -1;
     private Gson gson;
     private Aids_Model aidsModel;
+    private int selectedAidNumber = -1;
 
     @Override
     public void onCreate() {
@@ -55,7 +56,7 @@ public class HceCcEmulationService3 extends HostApduService {
         sendMessageToActivity("# processCommandApdu received", bytesToHexNpe(commandApdu));
         //sendUsingStaticallyRegisteredBroadcastReceiver("# processCommandApdu received " + bytesToHexNpe(bytes));
         System.out.println("processCommandApdu: " + bytesToHexNpe(commandApdu));
-        System.out.println("processCommandApdu: " + new String(commandApdu, StandardCharsets.UTF_8));
+        //System.out.println("processCommandApdu: " + new String(commandApdu, StandardCharsets.UTF_8));
 
         // don't ask for the cardEmulation when in a reading sequence, reset on SELECT_PPSE only
         // int selectCard = -1;
@@ -80,6 +81,7 @@ public class HceCcEmulationService3 extends HostApduService {
                 sendMessageToActivity("* Imported File Workflow *", "");
                 response = aidsModel.getSelectPpseResponse();
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(response));
+                selectedAidNumber = -1;
                 return response; // this is including the SELECT_OK_RESPONSE
                 //return concatenateByteArrays(aidsModel.getSelectPpseCommand(), SELECT_OK_SW);
             }
@@ -115,35 +117,41 @@ public class HceCcEmulationService3 extends HostApduService {
             // Imported Card Data
             sendMessageToActivity("# Imported Card #", "");
 
-            // step 2 needs to check if the requested AID matches to one on the card
-            int selectedAidNumber = -1;
-            Aid_Model aidModel;
-            for (int i = 0; i < aidsModel.getNumberOfAids(); i++) {
-                aidModel = aidsModel.getAidModel().get(i);
-                int commandNumber = findCommandInAidModel(aidModel, commandApdu);
-                if (commandNumber < 0) {
-                    // do nothing
-                } else {
-                    selectedAidNumber = i;
-                    // step 02 selecting the AID
-                    response = aidsModel.getAidModel().get(selectedAidNumber).getRespond().get(commandNumber);
-                    sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
-                    sendMessageToActivity("step 02 Select AID Response", bytesToHexNpe(response));
-                    //return concatenateByteArrays(response, SELECT_OK_SW);
-                    return response;
-                }
-            }
-            if (selectedAidNumber < 0) {
+            // step 2 needs to check if the requested AID matches one on the card
+            int selectAidCommandNumber = findCommandInAidsModel(aidsModel, commandApdu);
+            if (selectAidCommandNumber < 0) {
+                // do nothing, is another command
+            } else {
+
+                // todo this is not selecting the aid data
+
+                selectedAidNumber = selectAidCommandNumber;
+                System.out.println("selectAidCommandNumber: " + selectAidCommandNumber);
+                // step 02 selecting the AID
+                response = aidsModel.getAidModel().get(selectedAidNumber).getRespond().get(selectAidCommandNumber);
                 sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
-                sendMessageToActivity("FAILURE: did not find a matching AID in file, aborting", "");
+                sendMessageToActivity("step 02 Select AID Response", bytesToHexNpe(response));
+                //return concatenateByteArrays(response, SELECT_OK_SW);
+                return response;
+            }
+
+            if (selectAidCommandNumber > -1) {
+                // do nothing
+                //sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
+                //sendMessageToActivity("FAILURE: did not find a matching AID in file, aborting", "");
             } else {
                 // now we are running the usual workflow for command and response, using the selectedAidNumber
-                aidModel = aidsModel.getAidModel().get(selectedAidNumber);
+                Aid_Model aidModel = aidsModel.getAidModel().get(selectedAidNumber);
                 // step 03
-                // step 03 Get Processing Options
-                // todo do not compare the full commandApdu as it is changed to my Talk To Your Credit Card data
+                // step 03 Get Processing Options and following steps
+                // as the GPO command depends on parameters there is no static comparing possible,
+                // instead I'm comparing just the first 2 bytes
+                int minimumCommandLengthForGetProcessingOptions = 2;
+                byte[] shortedCommandApdu = Arrays.copyOf(commandApdu, minimumCommandLengthForGetProcessingOptions);
+                if (arrayBeginsWith(commandApdu, shortedCommandApdu)) {
+                // do not compare the full commandApdu as it is changed to my Talk To Your Credit Card data
                 // if (Arrays.equals(commandApdu, VisaAnonymizedSampleCard.SGET_PROCESSING_OPTONS_COMMAND)) {
-                int commandNumber = findCommandInAidModel(aidModel, commandApdu, 2);
+                int commandNumber = findCommandInAidModel(aidModel, commandApdu, minimumCommandLengthForGetProcessingOptions);
                 if (commandNumber < 0) {
                     sendMessageToActivity("step 03 Get Processing Options Command ", bytesToHexNpe(commandApdu));
                     sendMessageToActivity("FAILURE: did not find a matching command in file, aborting", "");
@@ -154,10 +162,32 @@ public class HceCcEmulationService3 extends HostApduService {
                     sendMessageToActivity("step 03 Get Processing Options (GPO) Response", bytesToHexNpe(response));
                     return response;
                 }
-
-
+                } else {
+                    // this is not a GPO command, compare in full length
+                    int commandNumber = findCommandInAidModel(aidModel, commandApdu);
+                    if (commandNumber < 0) {
+                        // it could be selectAid command for the next AID on card
+                        selectAidCommandNumber = findCommandInAidsModel(aidsModel, commandApdu);
+                        if (selectAidCommandNumber < 0) {
+                            // do nothing
+                        } else {
+                            selectedAidNumber = selectAidCommandNumber;
+                            // step 02 selecting the AID
+                            response = aidsModel.getAidModel().get(selectedAidNumber).getRespond().get(commandNumber);
+                            sendMessageToActivity("step 02 Select AID Command ", bytesToHexNpe(commandApdu));
+                            sendMessageToActivity("step 02 Select AID Response", bytesToHexNpe(response));
+                            //return concatenateByteArrays(response, SELECT_OK_SW);
+                            return response;
+                        }
+                    } else {
+                        response = aidsModel.getAidModel().get(selectedAidNumber).getRespond().get(commandNumber);
+                        String comTypeString = aidsModel.getAidModel().get(selectedAidNumber).getCommandType().get(commandNumber);
+                        sendMessageToActivity("step 0" + comTypeString + " Command  ", bytesToHexNpe(commandApdu));
+                        sendMessageToActivity("step 0" + comTypeString + " Response ", bytesToHexNpe(response));
+                        return response;
+                    }
+                }
             }
-
 
         } else if (selectCard == 0) {
             // Visacard
@@ -687,6 +717,34 @@ public class HceCcEmulationService3 extends HostApduService {
         }
 
         return SELECT_OK_SW;
+    }
+
+    /**
+     * Searches for the commandApdu in the complete aidsModel and returns 0..x in case the commandApdu
+     * is of commandType 1 - Select AID. In case of failure it returns -1
+     * @param aidsModel
+     * @param commandApdu
+     * @return
+     */
+    private int findCommandInAidsModel(Aids_Model aidsModel, byte[] commandApdu) {
+        int selectedAidNumber = -1;
+        Aid_Model aidModel;
+        for (int i = 0; i < aidsModel.getNumberOfAids(); i++) {
+            aidModel = aidsModel.getAidModel().get(i);
+            int commandNumber = findCommandInAidModel(aidModel, commandApdu);
+            if (commandNumber < 0) {
+                // do nothing
+            } else {
+                // is the commandApdu of type 1 ?
+                if (aidModel.getCommandTypeInt().get(commandNumber) == 1) {
+                    // this is a match
+                    selectedAidNumber = i;
+                    System.out.println("*** findCommandInAidsModel match AID " + i + " ***");
+                    return selectedAidNumber;
+                }
+            }
+        }
+        return selectedAidNumber;
     }
 
     /**
