@@ -123,12 +123,6 @@ public class HceCcEmulationService3 extends HostApduService {
 
             // a) the command is a 'Select AID' command -> search in the complete database for this command
             int selAidNumber = findSelectAidCommandInAidsModel(aidsModel, commandApdu);
-            if (selAidNumber == -1) {
-                // do nothing, command is NOT a select AID command
-            } else {
-
-            }
-
             if (selAidNumber < 0) {
                 // the command is not of type 1 = Select AID so nothing is to do here
             } else {

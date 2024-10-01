@@ -14,6 +14,9 @@
     <!-- mastercard credit or debit card -->
     <string name="aidMastercard">A0000000041010</string>
     <string name="hce_service_log">HCE Service Log</string>
-    <string name="aidGirocard">A00000005945430100</string>
+    <string name="aidGirocardElectronicCash">A00000005945430100</string>
+    <string name="aidGirocardEaps">D0000003591010028001</string>
+    <string name="aidGirocardAtm">D27600002547410100</string>
+    <string name="aidGirocardMaestro">a0000000043060</string>
 
 </resources>
