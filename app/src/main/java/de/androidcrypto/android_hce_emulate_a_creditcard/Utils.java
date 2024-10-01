@@ -59,9 +59,9 @@ public class Utils {
 
     public static boolean arrayBeginsWith (byte[] fullArray, byte[] searchArray) {
         if ((fullArray == null) || (searchArray == null)) return false;
+        if (fullArray.length == 0) return false;
         if (searchArray.length == 0) return false;
-        if (Arrays.equals(Arrays.copyOf(fullArray, searchArray.length), searchArray)) return true;
-        return false;
+        return Arrays.equals(Arrays.copyOf(fullArray, searchArray.length), searchArray);
     }
 
     public static void doVibrate(Activity activity) {
