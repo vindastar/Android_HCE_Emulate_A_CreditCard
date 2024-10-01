@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvHceServiceLog;
     private com.google.android.material.textfield.TextInputEditText etCardEmulation;
-    private Button btnCardEmulation, btnSaveLogfile, btnClearLog, btnImportEmulationData;
+    private Button btnCardEmulation, btnSaveLogfile, btnClearLog, btnImportEmulationData, btnAnonymize;
     private static final String CARD_EMULATION_FILENAME = "cardemulation.txt"; // any changes need to done in MainActivity and HceCcEmulationService
     private String cardEmulation;
     private String hceServiceLog = "";
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         btnClearLog = findViewById(R.id.btnClearLog);
         btnSaveLogfile = findViewById(R.id.btnSaveLog);
         btnImportEmulationData = findViewById(R.id.btnImport);
+        btnAnonymize = findViewById(R.id.btnAnonymize);
         tvHceServiceLog = findViewById(R.id.tvHceServiceLog);
 
         /**
@@ -171,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
                 showAToast(view.getContext(), "Success CardEmulation is " + cardEmulation);
                 etCardEmulation.setText("file: xxx.json");
 */
+            }
+        });
+
+        btnAnonymize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AnonymizeActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/viewMainActivity"
-    tools:context=".MainActivity">
+    android:id="@+id/viewAnonymizeActivity"
+    tools:context=".AnonymizeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_marginTop="108dp"
             android:layout_marginEnd="8dp"
             android:padding="10dp"
-            android:text="@string/header_write"
+            android:text="Anonymize Emulation Data"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="@string/description_write"
+            android:text="xxx"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -88,25 +88,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <Button
-        android:id="@+id/btnSaveLog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:text="save the log file" />
+            <Button
+                android:id="@+id/btnSaveLog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="save the log file" />
 
-        <Button
-            android:id="@+id/btnClearLog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
-            android:text="clear the log file" />
+            <Button
+                android:id="@+id/btnClearLog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                android:text="clear the log file" />
 
         </LinearLayout>
 
