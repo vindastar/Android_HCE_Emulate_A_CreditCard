@@ -26,6 +26,17 @@ application Id (AID): a00000005945430100   Zentraler Kreditausschuss (ZKA) - Gir
 application Id (AID): a0000003591010028001 Euro Alliance of Payment Schemes s.c.r.l. EAPS - Girocard EAPS (abandoned sometime after 2013)
 application Id (AID): d27600002547410100   ZKA - Girocard ATM
 application Id (AID): a0000000043060       Mastercard International - Maestro (Debit) Card
+
+Card MF:
+Found tag 0x4F 5 times:
+application Id (AID): a00000005945430100   Zentraler Kreditausschuss (ZKA) - Girocard Electronic Cash
+application Id (AID): a0000003591010028001 Euro Alliance of Payment Schemes s.c.r.l. EAPS - Girocard EAPS (abandoned sometime after 2013)
+application Id (AID): d27600002547410100   ZKA - Girocard ATM
+application Id (AID): a0000000032020       Visa International - V PAY
+application Id (AID): a0000000032010       Visa International - VISA Electron (Debit)
+
+
+
 ```
 ```none
 For usage at POS terminal I'm using the AID "A00000005945430100"

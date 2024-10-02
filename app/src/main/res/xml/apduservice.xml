@@ -14,5 +14,7 @@
         <aid-filter android:name="@string/aidGirocardEaps"/>
         <aid-filter android:name="@string/aidGirocardAtm"/>
         <aid-filter android:name="@string/aidGirocardMaestro"/>
+        <aid-filter android:name="@string/aidGirocardVisaVpay"/>
+        <aid-filter android:name="@string/aidGirocardVisaElectron"/>
     </aid-group>
 </host-apdu-service>

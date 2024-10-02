@@ -14,9 +14,12 @@
     <!-- mastercard credit or debit card -->
     <string name="aidMastercard">A0000000041010</string>
     <string name="hce_service_log">HCE Service Log</string>
+    <!-- german girocard -->
     <string name="aidGirocardElectronicCash">A00000005945430100</string>
-    <string name="aidGirocardEaps">D0000003591010028001</string>
+    <string name="aidGirocardEaps">A0000003591010028001</string>
     <string name="aidGirocardAtm">D27600002547410100</string>
     <string name="aidGirocardMaestro">a0000000043060</string>
+    <string name="aidGirocardVisaVpay">a0000000032020</string>
+    <string name="aidGirocardVisaElectron">a0000000032010</string>
 
 </resources>

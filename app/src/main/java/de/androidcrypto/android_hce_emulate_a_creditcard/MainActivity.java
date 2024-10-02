@@ -88,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
                     mMessageReceiver, new IntentFilter("HceCcEmulatorService"));
         }
 
+        /*
+        A German Girocard requires these AIDs
+        Found tag 0x4F 5 times:
+        application Id (AID): a00000005945430100
+        application Id (AID): a0000003591010028001
+        application Id (AID): d27600002547410100
+        application Id (AID): a0000000032020
+        application Id (AID): a0000000032010
+
+         */
+
         btnCardEmulation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

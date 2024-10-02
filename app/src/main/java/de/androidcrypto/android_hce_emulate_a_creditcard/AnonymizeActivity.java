@@ -9,10 +9,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,9 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This is class for using the VoBa Girocard only (fixed elements), don't use it for CreditCards
+ * without checking data and fields
+ */
+
 public class AnonymizeActivity extends AppCompatActivity {
 
-    private TextView tvHceServiceLog;
     private com.google.android.material.textfield.TextInputEditText etCardEmulation;
     private Button btnImportEmulationData, btnAnonymize, btnExportEmulationData;
     private String exportFileName = "ano_.json";
@@ -105,7 +107,10 @@ public class AnonymizeActivity extends AppCompatActivity {
                 // exchange
                 newAidsModel = replaceStringInAidsModel(oldAidsModel, newAidsModel, oldAccountNumber, newAccountNumber);
                 System.out.println("====== END SEARCHING & REPLACE ======");
+                System.out.println("====== DUMP NEW AIDS_MODEL ======");
                 newAidsModel.dump();
+                numberOfExchanges = findStringInAidsModel(oldAidsModel, oldAccountNumber, newAccountNumber);
+                System.out.println("numberOfExchanges: " + numberOfExchanges);
                 System.out.println("====== END DUMP NEW AIDS_MODEL ======");
                 etCardEmulation.setText("Anonymize done");
             }
@@ -176,6 +181,7 @@ public class AnonymizeActivity extends AppCompatActivity {
                 newResponsesList.add(hexStringToByteArray(replacedResponseString));
             }
             // write the new list to the new entry
+            singleAidModel.setRespond(newResponsesList);
             newAidModelList.add(singleAidModel);
             System.out.println("==== end of responses ====");
         }
@@ -305,6 +311,7 @@ public class AnonymizeActivity extends AppCompatActivity {
                         if (resultData != null) {
                             uri = resultData.getData();
                             // Perform operations on the document using its URI.
+                            cardEmulation = convertAidsModelClassToJson(newAidsModel);
                             try {
                                 writeTextToUri(uri, cardEmulation);
                                 etCardEmulation.setText("Success on writing file");
