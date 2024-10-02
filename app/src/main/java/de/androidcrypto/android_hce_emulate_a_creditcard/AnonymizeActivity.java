@@ -1,6 +1,5 @@
 package de.androidcrypto.android_hce_emulate_a_creditcard;
 
-import static de.androidcrypto.android_hce_emulate_a_creditcard.InternalFilesHelper.writeTextToInternalStorage;
 import static de.androidcrypto.android_hce_emulate_a_creditcard.Utils.bytesToHexNpe;
 import static de.androidcrypto.android_hce_emulate_a_creditcard.Utils.hexStringToByteArray;
 
@@ -10,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,13 +41,13 @@ public class AnonymizeActivity extends AppCompatActivity {
 
     private TextView tvHceServiceLog;
     private com.google.android.material.textfield.TextInputEditText etCardEmulation;
-    private Button btnCardEmulation, btnSaveLogfile, btnClearLog, btnImportEmulationData, btnAnonymize;
-    private static final String CARD_EMULATION_FILENAME = "cardemulation.txt"; // any changes need to done in MainActivity and HceCcEmulationService
+    private Button btnImportEmulationData, btnAnonymize, btnExportEmulationData;
+    private String exportFileName = "ano_.json";
     private String cardEmulation;
-    private String hceServiceLog = "";
-    private Context contextImportFile; // used for read a file from uri
+    private Context contextFileOperations; // used for read a file from uri
     private Gson gson;
-    private Aids_Model aidsModel;
+    private Aids_Model oldAidsModel, newAidsModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,18 +61,16 @@ public class AnonymizeActivity extends AppCompatActivity {
         });
 
         etCardEmulation = findViewById(R.id.etCardEmulation);
-        btnCardEmulation = findViewById(R.id.btnCardEmulation);
-        btnClearLog = findViewById(R.id.btnClearLog);
-        btnSaveLogfile = findViewById(R.id.btnSaveLog);
         btnImportEmulationData = findViewById(R.id.btnImport);
+        btnExportEmulationData = findViewById(R.id.btnExport);
         btnAnonymize = findViewById(R.id.btnAnonymize);
-        tvHceServiceLog = findViewById(R.id.tvHceServiceLog);
+
 
         btnImportEmulationData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // import a file in download folder and use it for emulation
-                contextImportFile = view.getContext();
+                contextFileOperations = view.getContext();
                 // https://developer.android.com/training/data-storage/shared/documents-files
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -101,52 +100,75 @@ public class AnonymizeActivity extends AppCompatActivity {
                 int numberOfExchanges = 0;
 
                 System.out.println("====== START SEARCHING & REPLACE ======");
-                numberOfExchanges = findStringInAidsModel(aidsModel, oldAccountNumber, newAccountNumber);
+                numberOfExchanges = findStringInAidsModel(oldAidsModel, oldAccountNumber, newAccountNumber);
                 System.out.println("numberOfExchanges: " + numberOfExchanges);
+                // exchange
+                newAidsModel = replaceStringInAidsModel(oldAidsModel, newAidsModel, oldAccountNumber, newAccountNumber);
                 System.out.println("====== END SEARCHING & REPLACE ======");
+                newAidsModel.dump();
+                System.out.println("====== END DUMP NEW AIDS_MODEL ======");
+                etCardEmulation.setText("Anonymize done");
+            }
+        });
 
-
-
+        btnExportEmulationData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                contextFileOperations = view.getContext();
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                // Optionally, specify a URI for the file that should appear in the
+                // system file picker when it loads.
+                //boolean pickerInitialUri = false;
+                //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+                intent.putExtra(Intent.EXTRA_TITLE, exportFileName);
+                fileSaverActivityResultLauncher.launch(intent);
             }
         });
 
     }
 
     // searches just in responses
-    private Aids_Model replaceStringInAidsModel(Aids_Model aidsModel, String oldString, String newString) {
+    private Aids_Model replaceStringInAidsModel(Aids_Model oldAidsModel, Aids_Model newAidsModel, String oldString, String newString) {
         if (oldString.length() != newString.length()) {
             System.out.println("length differs between oldString and newString, aborted");
             return null;
         }
-        int numberOfReplacements = 0;
 
-        int numberOfAids = aidsModel.getNumberOfAids();
-        byte[] getSelectPpseCommand = aidsModel.getSelectPpseCommand();
-        byte[] getSelectPpseResponse = aidsModel.getSelectPpseResponse();
-        List<Aid_Model> aidModelList;
-        List<byte[]> oldCommandsList;
-        Aids_Model newAidsModel;
+        // oldAidsModel and newAidsModel are equal at this time. THis method will update the newAidsModel
+        // for responses only with the new data
 
+        int numberOfAids = oldAidsModel.getNumberOfAids();
+        String replacedString;
+        List<Aid_Model> newAidModelList;
+
+        // step 1: change the getSelectPpseResponse variable
         // although the PPSE won't have an entry for the PAN I'm searching for it here as well
+        replacedString = bytesToHexNpe(oldAidsModel.getSelectPpseResponse()).replaceAll(oldString, newString);
+        // save it to the newAidsModel
+        newAidsModel.setSelectPpseResponse(hexStringToByteArray(replacedString));
 
-        String replacedString = bytesToHexNpe(aidsModel.getSelectPpseResponse()).replaceAll(oldString, newString);
-        aidsModel.setSelectPpseResponse(hexStringToByteArray(replacedString));
-        aidModelList = new ArrayList<>();
-        newAidsModel = new Aids_Model(numberOfAids);
-        Aid_Model aidSingleModel;
-        byte[] aid;
+        // step 2: iterate through the List<Aid_Model>
+        newAidModelList = new ArrayList<>();
+        Aid_Model singleAidModel;
         // go through all aids and all records
         for (int i = 0; i < numberOfAids; i++) {
-            aidSingleModel = aidsModel.getAidModel().get(i);
-            aid = aidSingleModel.getAid();
-            // todo get all data from old AIDS_MODEL and save it in new AIDS_MODEL variable
-            oldCommandsList = aidSingleModel.getCommand();
+            singleAidModel = oldAidsModel.getAidModel().get(i);
+
+            // step 3: now searching in each panFoundString entry
+            System.out.println("old: panFoundString: " + singleAidModel.getPanFoundString());
+            replacedString = singleAidModel.getPanFoundString().replaceAll(oldString, newString);
+            singleAidModel.setPanFoundString(replacedString);
+            System.out.println("new: panFoundString: " + replacedString);
+
+            // step 4: now searching in each (AID Model) oldResponsesList entry
             List<byte[]> oldResponsesList;
             List<byte[]> newResponsesList;
-            oldResponsesList = aidSingleModel.getRespond();
+            oldResponsesList = singleAidModel.getRespond();
             newResponsesList = new ArrayList<>();
-            // now searching in each (AID Model) oldResponsesList entry
-            int numberOfResponses = aidSingleModel.getRespond().size();
+
+            int numberOfResponses = oldResponsesList.size();
             System.out.println("In AIDS_MODEL index " + i + " are " + numberOfResponses + " responses");
             for (int j = 0; j < numberOfResponses; j++) {
                 String replacedResponseString = bytesToHexNpe(oldResponsesList.get(j)).replaceAll(oldString, newString);
@@ -154,14 +176,12 @@ public class AnonymizeActivity extends AppCompatActivity {
                 newResponsesList.add(hexStringToByteArray(replacedResponseString));
             }
             // write the new list to the new entry
-            newAidsModel.setSelectPpseCommand(getSelectPpseCommand);
-            newAidsModel.setSelectPpseResponse(getSelectPpseResponse);
-            aidModelList.add(aidSingleModel);
+            newAidModelList.add(singleAidModel);
             System.out.println("==== end of responses ====");
         }
         System.out.println("==== end of aid ====");
         // add the aidModel list
-        //newAidsModel.setAidModel(aidS);
+        newAidsModel.setAidModel(newAidModelList);
         return newAidsModel;
     }
 
@@ -220,21 +240,23 @@ public class AnonymizeActivity extends AppCompatActivity {
                                 cardEmulation = readTextFromUri(uri);
                                 //String fileContent = readTextFromUri(uri);
                                 if (TextUtils.isEmpty(cardEmulation)) {
-                                    showAToast(contextImportFile, "FAILURE on reading the file, aborted");
+                                    showAToast(contextFileOperations, "FAILURE on reading the file, aborted");
                                     return;
                                 }
 
                                 gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
-                                aidsModel = convertJsonToAidsModelClass(cardEmulation);
-                                if (aidsModel == null) {
+                                oldAidsModel = convertJsonToAidsModelClass(cardEmulation);
+                                newAidsModel = convertJsonToAidsModelClass(cardEmulation);
+                                if (oldAidsModel == null) {
                                     System.out.println("FAILURE on using imported file");
+                                    etCardEmulation.setText("FAILURE on using imported file");
+                                    showAToast(contextFileOperations, "FAILURE on using imported file");
+                                } else {
+                                    etCardEmulation.setText("SUCCESS on using imported file");
+                                    showAToast(contextFileOperations, "SUCCESS on using imported file");
                                 }
-                                aidsModel.dump();
+                                oldAidsModel.dump();
 
-                                //Log.d(TAG, "import data:\n" + fileContent);
-                                etCardEmulation.setText("Emulation from imported file");
-                                boolean success = writeTextToInternalStorage(contextImportFile, CARD_EMULATION_FILENAME, null, cardEmulation);
-                                showAToast(contextImportFile, "Success CardEmulation is IMPORTED FILE");
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -247,7 +269,7 @@ public class AnonymizeActivity extends AppCompatActivity {
     private String readTextFromUri(Uri uri) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         //try (InputStream inputStream = getContentResolver().openInputStream(uri);
-        try (InputStream inputStream = contextImportFile.getContentResolver().openInputStream(uri);
+        try (InputStream inputStream = contextFileOperations.getContentResolver().openInputStream(uri);
              BufferedReader reader = new BufferedReader(
                      new InputStreamReader(Objects.requireNonNull(inputStream)))) {
             String line;
@@ -258,7 +280,6 @@ public class AnonymizeActivity extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-
     private Aids_Model convertJsonToAidsModelClass(String jsonResponse) {
         try {
             Aids_Model aidsModel = gson.fromJson(jsonResponse, Aids_Model.class);
@@ -266,6 +287,51 @@ public class AnonymizeActivity extends AppCompatActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    // export an Emulation File
+
+    ActivityResultLauncher<Intent> fileSaverActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent resultData = result.getData();
+                        // The result data contains a URI for the document or directory that
+                        // the user selected.
+                        Uri uri = null;
+                        if (resultData != null) {
+                            uri = resultData.getData();
+                            // Perform operations on the document using its URI.
+                            try {
+                                writeTextToUri(uri, cardEmulation);
+                                etCardEmulation.setText("Success on writing file");
+                                showAToast(contextFileOperations, "Success on writing file");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                etCardEmulation.setText("IOException on writing file");
+                                showAToast(contextFileOperations, "IOException on writing file");
+                            }
+                        }
+                    }
+                }
+            });
+
+    private void writeTextToUri(Uri uri, String data) throws IOException {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(contextFileOperations.getContentResolver().openOutputStream(uri));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    private String convertAidsModelClassToJson(Aids_Model aidsModel) {
+        return gson.toJson(aidsModel, Aids_Model.class);
     }
 
 }

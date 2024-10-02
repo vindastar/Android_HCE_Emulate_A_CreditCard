@@ -53,7 +53,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
-            android:hint="-1 OK 0Vis 1AAB 2Ll 3AnoVis 4AnoMC 5VoBa 6 AnoVoBa"
+            android:hint="Status"
             android:visibility="visible"
             app:boxCornerRadiusBottomEnd="5dp"
             app:boxCornerRadiusBottomStart="5dp"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="3"
+                android:text="waiting for import"
                 android:textSize="16sp"
                 android:visibility="visible"
                 tools:ignore="KeyboardInaccessibleWidget" />
@@ -81,11 +81,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
+            android:visibility="gone"
             android:text="select a card to emulate" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <Button
@@ -137,17 +139,15 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/tvHceServiceLog"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnExport"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/hce_service_log"
-            android:textAlignment="textStart"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:typeface="monospace" />
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="export Emulation Data" />
 
     </LinearLayout>
 </ScrollView>
