@@ -104,7 +104,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
             */
 
@@ -166,7 +166,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
              */
 
@@ -228,7 +228,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardLloyds.SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(MastercardSampleCardLloyds.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardSampleCardLloyds.SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
              */
 
@@ -313,7 +313,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
             */
 
@@ -367,7 +367,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
              */
 
@@ -427,7 +427,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
              */
 
@@ -513,7 +513,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 05 Read File 10/01 Command
                 sendMessageToActivity("step 05 Read File 10/01 Command", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 05 Read File 10/01 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_10_01_RESPONSE));
-                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_10_01_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_10_01_RESPONSE, RESPONSE_OK_SW);
             }
 
             // step 06
@@ -521,7 +521,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 06 Read File 20/01 Command
                 sendMessageToActivity("step 06 Read File 20/01 Command", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 06 Read File 20/01 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_20_01_RESPONSE));
-                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_01_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_01_RESPONSE, RESPONSE_OK_SW);
             }
 
             // step 07
@@ -529,7 +529,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 07 Read File 20/02 Command
                 sendMessageToActivity("step 08 Read File 20/02 Command", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 08 Read File 20/02 Response", bytesToHexNpe(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE));
-                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardAnonymizedSampleCard.READ_FILE_20_02_RESPONSE, RESPONSE_OK_SW);
             }
 
              */
@@ -542,7 +542,7 @@ public class HceCcEmulationService2 extends HostApduService {
                 // step 01 selecting the PPSE
                 sendMessageToActivity("step 01 Select PPSE Command ", bytesToHexNpe(commandApdu));
                 sendMessageToActivity("step 01 Select PPSE Response", bytesToHexNpe(MastercardSampleCardAab.SELECT_PPSE_RESPONSE));
-                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, SELECT_OK_SW);
+                return concatenateByteArrays(MastercardSampleCardAab.SELECT_PPSE_RESPONSE, RESPONSE_OK_SW);
             }
              */
 
