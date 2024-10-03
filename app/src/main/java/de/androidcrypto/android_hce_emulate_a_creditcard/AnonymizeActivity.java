@@ -97,8 +97,14 @@ public class AnonymizeActivity extends AppCompatActivity {
                 // in total 19 numbers
                 // change the data between position 8 and 17
 
-                String oldAccountNumber = "0204684600";
-                String newAccountNumber = "0204692600";
+                // girocard voba mf
+                //String oldAccountNumber = "0204684600";
+                //String newAccountNumber = "0204692600";
+
+                // girocard hvb mf 67222024 0036378093 4
+                String oldAccountNumber = "0036378093";
+                String newAccountNumber = "0036384093";
+
                 int numberOfExchanges = 0;
 
                 System.out.println("====== START SEARCHING & REPLACE ======");

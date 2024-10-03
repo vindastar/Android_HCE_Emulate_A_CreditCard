@@ -13,8 +13,8 @@
         <aid-filter android:name="@string/aidGirocardElectronicCash"/>
         <aid-filter android:name="@string/aidGirocardEaps"/>
         <aid-filter android:name="@string/aidGirocardAtm"/>
-        <aid-filter android:name="@string/aidGirocardMaestro"/>
         <aid-filter android:name="@string/aidGirocardVisaVpay"/>
         <aid-filter android:name="@string/aidGirocardVisaElectron"/>
+        <aid-filter android:name="@string/aidGirocardMastercardMaestro"/>
     </aid-group>
 </host-apdu-service>
