@@ -150,7 +150,7 @@ public static byte[] SELECT_OK_SW = hexStringToByteArray("9000");
     }
 ```
 
-When tapping the device to the "Tak to your Credit Card" app there is just one line in the console:
+When tapping the device to the "Talk to your Credit Card" app there is just one line in the console:
 
 ```none
 processCommandApdu: 00a404000e325041592e5359532e444446303100
@@ -234,7 +234,7 @@ Data Trailer Byte:                        bc
 The decryption of the data is available with an Android app that is available on GitHub since many 
 years. 
 
-**To repeat it again: never ever publish data related to payment card in the public !**
+**To repeat it again: never ever publish data related to a payment card in the public !**
 
 ## Troubleshooting
 
@@ -248,7 +248,7 @@ This sounds crazy on first thought, but even if you can work with your NFC reade
 there is not guaranty that HCE is supported. Solution in case of "not supported": get another Android 
 device.
 
-### Is the NFC service on yur phone enabled ?
+### Is the NFC service on your phone enabled ?
 
 Don't rely on the fact that YOU did not put the service ever "off". Go to the "Connection" settings 
 of your device to be clear that NFC is set to "on".
@@ -282,10 +282,25 @@ You may that "*puh, of course*", but in my own experience I sometimes worked wit
 and in the end one file or setting pointed to wrong data, so please double check these settings 
 **at all**.
 
+### Did you (re-) enable your service in Android settings ?
+
+Sometime the settings for your HCE app gets disabled, so check that it is still active: Go to 
+Settings -> Connections -> NFC -> Tap and Pay -> category "payment" tab ("enable default payment service") 
+and enable the HCE CC app (if not already done).
+
+### Did you delete your HCE app from your Android device ?
+
+Especially when you are in the development phase of your app you often switch between different versions 
+of your HCE service class. After pressing the "Run" button in Adroid Studio everythings seems to work 
+correctly but Android will still use the old service class. For that reason you have to (physically) 
+delete the app from your Android device and then press "Run". Again: you need to do this if you change the 
+class but not if you change the content within your class. Please do not forget to enable the HCE service 
+in Android settings again (see above "Did you (re-) enable your service in Android settings ?").
+
 ### Did you use my "Talk to your Credit Card" application as POS Terminal ?
 
 You may answer - "*I do have a good Credit Card reader*" but sometimes these readers are for specific 
-Credit Cards only. For your first tests (to be for sure that the app IS working) use the app. It is 
+Credit Cards only. For your first tests (to be for sure that the app IS working) use my app. It is 
 part of a tutorial series about [Reading of Credit Cards](https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a) and you get the final app (last updated in 
 September 2024) here: https://github.com/AndroidCrypto/TalkToYourCreditCardG8
 
