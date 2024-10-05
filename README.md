@@ -13,7 +13,7 @@ before a transaction is finished and processed by the CC terminal ("POS Terminal
 As this repository is the accompanying resource for a tutorial on medium.com I wrote there is no real 
 "final" code but a lot of pieces that will form the complete picture.
 
-The tutorial is published here: soon...
+The tutorial is published here: https://medium.com/@androidcrypto/how-to-emulate-a-credit-card-on-android-with-host-based-card-emulation-hce-in-java-0652342da0f1
 
 This app is based on the tutorial "**How to use Host-based Card Emulation (HCE) in Android — a beginner 
 tutorial (Java)**" that is published here: https://medium.com/@androidcrypto/how-to-use-host-based-card-emulation-hce-in-android-a-beginner-tutorial-java-32974dd89529.
