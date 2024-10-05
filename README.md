@@ -174,32 +174,27 @@ the next steps.
 
 ## A Note on processing sensitive data (e.g. Credit Card numbers, Expire dates)
 
-Please never ask a friend to hand out his or her Credit Card for test purposes. The "Talk to your 
+Please **never ask a friend to hand out his or her Credit Card for test purposes**. The "Talk to your 
 Credit Card app" exposes very sensitive data in a very easy way. Once the data is read out it is in the 
 world.
 
-Second: never ever publish those data in forums or web sites, even if they look harmless. When using 
-the app ou read the data from the card, and for example you get this analyzed data:
+Second: **never ever publish those data in forums or web sites**, even if they look harmless. When using 
+the app you read the data from the card, and for example you get this analyzed data from a file:
 
 ```none
-parsed recovered ICC Public Key
-Recovered Data Header:                    106
-Recovered Data Header Byte:               6a
-Certificate Format:                       4
---------------------------------
-Application Pan:                          4930005025003985ffff
-Certificate Expiration Date:              0926
---------------------------------
-Certificate Serial Number:                54f6de
-Hash Algorithm Indicator                  1
-ICC Public Key Algorithm Indicator:       1
-ICC Public Key Length:                    128
-ICC Public Key Exponent Length:           1
-Leftmost Digits of the ICC Public Key:    cc1804e562a5d6b1f10bd992faec97a803fdbcb2ac8f8936fb18098688755d67ea37e5082f5c1a61075a43a720259f604ba7ed5eba751c53984b32526a5a319c9f07a6e8227785cb186201a0e9a3071e450b99feaa8e2182d68c112d422736dfeb0a3366370eba09ce8b32a51621d789cda3ae2e7e0ce66c28c74eff64c24eb5
-Optional padding:                         bbbbbbbbbbbb
-Hash Result :                             4dbe2c4f35c3a549af80f991318ad6ee76327d2a
-Data Trailer:                             188
-Data Trailer Byte:                        bc
+70 81 B4 -- Record Template (EMV Proprietary)
+         9F 46 81 B0 -- ICC Public Key Certificate
+                     47 46 1F FC A1 4B 5D FD C2 09 56 9C 8A 14 F1 76
+                     44 25 1A A3 F4 AB EA 25 12 62 13 4B 92 09 82 F0
+                     25 07 41 F9 6F CC B4 08 00 29 30 54 C0 D8 98 24
+                     BA 7A C4 4E E7 BA B0 6F A1 57 FC CF 7E 52 D3 C6
+                     4B 4D 8A CD 41 B9 77 4B 80 15 19 ED 6F EC 82 7E
+                     C2 EC 29 F8 99 11 67 C4 53 77 65 59 A4 A0 6F D9
+                     8C 4B 9B D1 54 8A 65 AF 2F 56 00 2A 83 6B DF 9A
+                     04 0A 92 53 E6 53 58 4C 92 83 3C 3D 1A A8 E0 8C
+                     4D E9 CD A1 02 60 44 F8 0F 39 A9 32 6A 57 49 65
+                     98 98 7A 6B 3E 18 A5 F5 6A 8B DE DE 75 28 70 E8
+                     79 37 76 DB 9D 32 5C CD 9C 7C A5 DB 33 C2 8F 04 (BINARY)
 ```
 
 If you are familiar with cryptography you know that a key certificate is a chain of certificates 
@@ -212,8 +207,8 @@ Recovered Data Header:                    106
 Recovered Data Header Byte:               6a
 Certificate Format:                       4
 --------------------------------
-Application Pan:                          4930005025003985ffff
-Certificate Expiration Date:              0926
+Application Pan:                          4921828094896752ffff
+Certificate Expiration Date:              0225
 --------------------------------
 Certificate Serial Number:                54f6de
 Hash Algorithm Indicator                  1
@@ -291,11 +286,12 @@ and enable the HCE CC app (if not already done).
 ### Did you delete your HCE app from your Android device ?
 
 Especially when you are in the development phase of your app you often switch between different versions 
-of your HCE service class. After pressing the "Run" button in Adroid Studio everythings seems to work 
-correctly but Android will still use the old service class. For that reason you have to (physically) 
-delete the app from your Android device and then press "Run". Again: you need to do this if you change the 
-class but not if you change the content within your class. Please do not forget to enable the HCE service 
-in Android settings again (see above "Did you (re-) enable your service in Android settings ?").
+of your HCE service class. After pressing the "Run" button in Android Studio everything seems to work 
+correctly but **Android will still use the old service class**. For that reason you have to (physically) 
+delete the app from your Android device and then press "Run" to re-install the app. Again: you need to 
+do this if you **change the class** but not if you **change the content** within your class. Please do 
+not forget to enable the HCE service in Android settings again (see above "Did you (re-) enable your 
+service in Android settings ?").
 
 ### Did you use my "Talk to your Credit Card" application as POS Terminal ?
 
@@ -304,15 +300,4 @@ Credit Cards only. For your first tests (to be for sure that the app IS working)
 part of a tutorial series about [Reading of Credit Cards](https://medium.com/@androidcrypto/talk-to-your-credit-card-android-nfc-java-d782ff19fc4a) and you get the final app (last updated in 
 September 2024) here: https://github.com/AndroidCrypto/TalkToYourCreditCardG8
 
-
-
-
-
-
-# Stuff to delete
-
-Get the PAN and Expiration Date using the Public Key data on the tag. See NfcEmvExampleG8 in CryptoStuffActivity
-
-Create a valid Credit Card Number with bank select https://www.bincodes.com/bank-creditcard-generator/
-
-
+Latest update: Oct. 5.th, 2024
