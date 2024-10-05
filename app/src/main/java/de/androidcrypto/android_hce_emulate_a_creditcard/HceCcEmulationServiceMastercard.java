@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 /**
  * This service class uses a static approach to serve the data (command and response data) of a
- * sample Visa Card. 
+ * sample MasterCard.
  * 
  * The provided data are from an outdated Visa Card that is no longer in use and the card is 
  * blocked by the bank. The data was recorded with the app "Talk to your Credit Card" 
@@ -82,7 +82,7 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
         if (Arrays.equals(shortedCommandApdu, GET_PROCESSING_OPTONS_COMMAND_SHORTED)) {
             sendMessageToActivity("step 03 Get Processing Options (GPO) Command", bytesToHexNpe(commandApdu));
             sendMessageToActivity("step 03 Get Processing Options (GPO) Response", bytesToHexNpe(GET_PROCESSING_OPTONS_RESPONSE));
-            return concatenateByteArrays(MastercardSampleCardAab.GET_PROCESSING_OPTONS_RESPONSE_ORG, RESPONSE_OK_SW);
+            return concatenateByteArrays(GET_PROCESSING_OPTONS_RESPONSE, RESPONSE_OK_SW);
         }
 
         // step 04
